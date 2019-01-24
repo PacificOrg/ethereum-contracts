@@ -3,6 +3,8 @@
 This repository hosts source code of on-chain part of [Pacific.org](https://www.pacific.org).
 All smart contracts are located in the contracts folder.
 
+[![Smart Contracts](https://raw.githubusercontent.com/PacificOrg/contracts/master/docs/contracts.jpg)](https://raw.githubusercontent.com/PacificOrg/contracts/master/docs/contracts.jpg)
+
 ## Development
 
 Requirements:
