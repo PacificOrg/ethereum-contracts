@@ -36,9 +36,9 @@ ERC20 compatible token contract (see [wiki for documentation](https://theethereu
 
 `getHolders(uint256 amount) public view returns (address[] memory)`
 
-### Contract `Transfers`
+### Contract `EtherTransfers`
 
-Contract responsible for sending dividend and staking.
+Contract responsible for sending Ether.
 
 #### Events
 
@@ -47,5 +47,15 @@ Contract responsible for sending dividend and staking.
 #### Methods
 
 `sendEther(address payable[] memory beneficiaries, uint256[] memory values) public payable onlyOwner`
+
+### Contract `TokenTransfers`
+
+Contract responsible for sending ERC20 compatible tokens.
+
+#### Events
+
+`TransferDenied(address indexed to, uint256 value)`
+
+#### Methods
 
 `sendToken(ERC20 token, address[] memory beneficiaries, uint256[] memory values) public onlyOwner`
