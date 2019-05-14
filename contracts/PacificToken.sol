@@ -10,20 +10,18 @@ import "openzeppelin-solidity/contracts/token/ERC20/ERC20Detailed.sol";
 contract PacificToken is ERC20, ERC20Detailed {
   address[] private _holdersList;
   mapping (address => bool) private _holdersMapping;
-
-  mapping (address => bool) private _vestingHolders;
-  uint256 private _vestingEnd;
+  mapping (address => uint256) private _vestingHolders;
 
  /**
   * @dev Constructor that gives msg.sender all of existing tokens.
   * @param vestingHolders List of addresses that will be vesting tokens.
-  * @param vestingEnd The time (as Unix timestamp) at which point vesting ends.
+  * @param vestingEnds The time (as Unix timestamp) at which point vesting ends.
   */
-  constructor (address[] memory vestingHolders, uint256 vestingEnd) public ERC20Detailed("Pacific", "PCF", 8) {
-    _vestingEnd = vestingEnd;
+  constructor (address[] memory vestingHolders, uint256[] memory vestingEnds) public ERC20Detailed("Pacific", "PCF", 8) {
+    require(vestingHolders.length == vestingEnds.length);
 
     for (uint256 i = 0; i < vestingHolders.length; ++i) {
-      _vestingHolders[vestingHolders[i]] = true;
+      _vestingHolders[vestingHolders[i]] = vestingEnds[i];
     }
 
     _mint(msg.sender, 100000000000000000);
@@ -34,7 +32,7 @@ contract PacificToken is ERC20, ERC20Detailed {
   }
 
   /**
-  * @dev Transfer token for a specified addresses
+  * @dev Transfers token for a specified addresses
   * @param from The address to transfer from.
   * @param to The address to transfer to.
   * @param value The amount to be transferred.
@@ -52,7 +50,7 @@ contract PacificToken is ERC20, ERC20Detailed {
   }
 
   /**
-  * @dev Return list of holders that have at least amount of tokens
+  * @notice Returns list of holders that have at least specified amount of tokens.
   * @param amount The required amount of tokens.
   */
   function getHolders(uint256 amount) public view returns (address[] memory) {
@@ -82,10 +80,10 @@ contract PacificToken is ERC20, ERC20Detailed {
   }
 
   /**
-  * @dev Check if given address is allowed to transfer tokens
+  * @dev Checks if given address is allowed to transfer tokens.
   * @param from The address of account to transfer from.
   */
   function _canTransfer(address from) internal view returns (bool) {
-    return (!_vestingHolders[from] || block.timestamp >= _vestingEnd);
+    return (_vestingHolders[from] == 0 || block.timestamp >= _vestingHolders[from]);
   }
 }
