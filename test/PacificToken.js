@@ -29,7 +29,7 @@ contract('PacificToken', function(accounts) {
 
     const holders = await instance.getHolders.call(1000000000000);
 
-    assert.equal(holders.join(', '), accounts[0] + ', ' + accounts[1], 'List of holders is different than [' + accounts[0] + ', ' + accounts[1] + ']');
+    assert.sameMembers(holders, [accounts[0], accounts[1]], 'List of holders is different than [' + accounts[0] + ', ' + accounts[1] + ']');
   });
   it('check if vested account of PacificToken can transfer tokens after end of vesting time using transfer()', async() => {
     const instance = await PacificToken.new([accounts[1]], [(Math.round(new Date().getTime() / 1000) - 3600)]);
